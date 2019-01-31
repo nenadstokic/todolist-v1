@@ -4,32 +4,34 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
+let items= ["Buy food", "Cook food", "Eat food"];
+
 app.use(bodyParser.urlencoded({extended:"true"}));
 
 app.set("view engine", "ejs");
 
 app.get("/", function(req, res){
 
-  var today = new Date();
+  let today = new Date();
 
-  var options = {
+  let options = {
     weekday: "long",
     day: "numeric",
     month: "long"
   };
 
-  var day = today.toLocaleDateString("sr", options);
+  let day = today.toLocaleDateString("sr", options);
 
-  res.render("list", {
-    kindOfDay: day
-  });
+  res.render("list", { kindOfDay: day, newListItems: items });
 
 });
 
 app.post("/", function(req, res){
-  var item = req.body.newItem;
+  let item = req.body.newItem;
 
-  res.render("list", {newListItem: item});
+  items.push(item);
+
+  res.redirect("/");
 });
 
 app.listen(3000, function(){
